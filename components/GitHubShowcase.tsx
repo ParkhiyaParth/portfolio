@@ -46,12 +46,29 @@ export default function GitHubShowcase({ username }: GitHubShowcaseProps) {
 
     if (state === 'loading') {
         return (
-            <div
-                className="flex items-center justify-center py-16"
-                role="status"
-                aria-label="Loading GitHub activity"
-            >
-                <span className="w-8 h-8 rounded-full border-2 border-purple-400/40 border-t-purple-400 animate-spin" />
+            <div role="status" aria-label="Loading GitHub activity">
+                {/* Stat tile skeletons */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    {Array.from({ length: 4 }).map((_, index) => (
+                        <GlassCard key={index} variant="default" className="text-center">
+                            <div className="h-8 w-16 mx-auto mb-2 rounded bg-white/10 animate-pulse" />
+                            <div className="h-3 w-20 mx-auto rounded bg-white/10 animate-pulse" />
+                        </GlassCard>
+                    ))}
+                </div>
+
+                {/* Repo card skeletons */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {Array.from({ length: 6 }).map((_, index) => (
+                        <GlassCard key={index} variant="default" className="h-full">
+                            <div className="h-5 w-2/3 mb-3 rounded bg-white/10 animate-pulse" />
+                            <div className="h-3 w-full mb-2 rounded bg-white/10 animate-pulse" />
+                            <div className="h-3 w-4/5 mb-4 rounded bg-white/10 animate-pulse" />
+                            <div className="h-3 w-1/3 rounded bg-white/10 animate-pulse" />
+                        </GlassCard>
+                    ))}
+                </div>
+                <span className="sr-only">Loading GitHub activity…</span>
             </div>
         );
     }

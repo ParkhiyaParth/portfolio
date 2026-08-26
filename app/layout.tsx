@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
+import ScrollProgress from "@/components/ScrollProgress";
+import BackToTop from "@/components/BackToTop";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -38,8 +40,10 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={inter.className}>
+                <ScrollProgress />
                 <Navigation />
                 <main className="pt-16">{children}</main>
+                <BackToTop />
             </body>
         </html>
     );
