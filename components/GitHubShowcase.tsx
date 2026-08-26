@@ -74,7 +74,7 @@ export default function GitHubShowcase({ username }: GitHubShowcaseProps) {
         );
     }
 
-    const { user, topRepos, totalStars, topLanguages } = data;
+    const { user, topRepos, totalStars, topLanguages, contributions } = data;
 
     const stats: { label: string; value: number | string }[] = [
         { label: 'Public Repos', value: user.public_repos },
@@ -136,6 +136,45 @@ export default function GitHubShowcase({ username }: GitHubShowcaseProps) {
                     </a>
                 ))}
             </div>
+
+            {/* Open source contributions */}
+            {contributions.length > 0 && (
+                <div className="mt-12">
+                    <h3 className="text-2xl font-semibold text-center text-gradient mb-6">
+                        Open Source Contributions
+                    </h3>
+                    <div className="space-y-3 max-w-3xl mx-auto">
+                        {contributions.map((pr) => (
+                            <a
+                                key={pr.id}
+                                href={pr.html_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block"
+                                aria-label={`View pull request "${pr.title}" on ${pr.repoFullName}`}
+                            >
+                                <GlassCard variant="hover" className="flex items-center justify-between gap-4 py-4">
+                                    <div className="min-w-0">
+                                        <p className="text-white font-medium truncate">{pr.title}</p>
+                                        <p className="text-sm text-gray-400 truncate">{pr.repoFullName}</p>
+                                    </div>
+                                    <span
+                                        className={`shrink-0 px-3 py-1 text-xs font-semibold rounded-full ${
+                                            pr.merged
+                                                ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
+                                                : pr.state === 'open'
+                                                  ? 'bg-green-500/20 text-green-300 border border-green-500/30'
+                                                  : 'bg-gray-500/20 text-gray-300 border border-gray-500/30'
+                                        }`}
+                                    >
+                                        {pr.merged ? 'Merged' : pr.state === 'open' ? 'Open' : 'Closed'}
+                                    </span>
+                                </GlassCard>
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             <div className="text-center mt-8">
                 <a

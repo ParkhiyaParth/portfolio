@@ -62,6 +62,21 @@ export interface GitHubUser {
 }
 
 /**
+ * Represents a pull request authored by the profile owner, as derived from
+ * the GitHub Search API (subset of fields used by the open-source
+ * contributions list)
+ */
+export interface GitHubPullRequest {
+    id: number;
+    title: string;
+    html_url: string;
+    state: 'open' | 'closed';
+    merged: boolean;
+    createdAt: string;
+    repoFullName: string;
+}
+
+/**
  * Represents a professional work experience entry
  * 
  * @property id - Unique identifier for the experience entry

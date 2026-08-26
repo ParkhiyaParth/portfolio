@@ -99,15 +99,17 @@ const projects: Project[] = [
 const experiences: Experience[] = [
     {
         id: '1',
-        role: 'AI/ML Intern',
-        company: 'Tech Company',
-        startDate: 'June 2024',
+        role: 'AI/ML Engineer',
+        company: 'Silvertouch Technologies',
+        startDate: 'January 2026',
         endDate: 'Present',
         description: [
-            'Developed and deployed machine learning models for production systems',
-            'Implemented RAG-based chatbot solutions using LangChain and FAISS',
-            'Collaborated with cross-functional teams to deliver AI-powered features',
-            'Optimized model performance and reduced inference time by 40%'
+            'Built and maintained multiple production AI/ML systems, including Retrieval-Augmented Generation (RAG) chatbots, OCR-based document intelligence pipelines, and natural-language-to-SQL query engines',
+            'Designed and implemented Kafka-based asynchronous processing pipelines — producers/consumers, retry/DLQ handling, and offset management — for scalable backend data extraction',
+            'Built RAG pipelines from scratch: chunking strategies, reranking, FAISS/Milvus vector search, and real-time streaming answers via WebSockets and Redis pub/sub',
+            'Implemented secure session management (JWT authentication, HttpOnly cookies) and OWASP-aligned security practices across multiple platforms',
+            'Contributed to conversational AI workflows for enterprise applications, including API integration, bug fixes, and technical documentation',
+            'Continuously upskilled across AI tooling, backend infrastructure (Kafka, RabbitMQ, Redis, Docker, CI/CD), and security practices, applying them directly to production systems'
         ]
     },
     {
