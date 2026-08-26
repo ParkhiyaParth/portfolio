@@ -1,7 +1,8 @@
-# Replace with your real domain (Caddy will automatically provision an
-# HTTPS certificate via Let's Encrypt once DNS points at this server).
-# For local/IP-only testing, use `:80` instead and Caddy will skip TLS.
-yourdomain.com {
+# No domain configured yet, so this serves plain HTTP on port 80.
+# Once you have a domain pointed at this server's IP, replace the line
+# below with your domain (e.g. `yourdomain.com {`) and Caddy will
+# automatically provision an HTTPS certificate via Let's Encrypt.
+:80 {
     handle /api/* {
         reverse_proxy backend:8000
     }
