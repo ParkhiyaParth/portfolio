@@ -170,6 +170,33 @@ describe('ProjectCard Component', () => {
         });
     });
 
+    describe('Featured Project Badge', () => {
+        it('should not render a featured badge for a regular project', () => {
+            render(<ProjectCard project={mockProject} onOpenModal={mockOnOpenModal} />);
+            expect(screen.queryByText(/flagship project/i)).not.toBeInTheDocument();
+        });
+
+        it('should render a featured badge when project.featured is true', () => {
+            const featuredProject: Project = { ...mockProject, featured: true };
+            render(<ProjectCard project={featuredProject} onOpenModal={mockOnOpenModal} />);
+            expect(screen.getByText(/flagship project/i)).toBeInTheDocument();
+        });
+
+        it('should mention "featured" in the accessible label when featured', () => {
+            const featuredProject: Project = { ...mockProject, featured: true };
+            render(<ProjectCard project={featuredProject} onOpenModal={mockOnOpenModal} />);
+            const button = screen.getByRole('button');
+            expect(button.getAttribute('aria-label')).toContain('featured project');
+        });
+
+        it('should span two columns on medium+ screens when featured', () => {
+            const featuredProject: Project = { ...mockProject, featured: true };
+            const { container } = render(<ProjectCard project={featuredProject} onOpenModal={mockOnOpenModal} />);
+            const article = container.querySelector('article');
+            expect(article).toHaveClass('md:col-span-2');
+        });
+    });
+
     describe('Click and Interaction Handling', () => {
         it('should call onOpenModal when card is clicked', async () => {
             render(<ProjectCard project={mockProject} onOpenModal={mockOnOpenModal} />);

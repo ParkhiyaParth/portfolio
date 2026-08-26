@@ -16,6 +16,8 @@ A single-page, dark-themed portfolio with glassmorphism styling, built with Next
 
 - Single-page layout with smooth scroll navigation and active-section highlighting
 - Glassmorphism UI: frosted-glass cards, gradient accents, dark theme
+- **Live GitHub showcase** — pulls real-time stats (repo count, total stars, followers, top languages) and top repositories straight from the GitHub REST API, with a graceful fallback if the API is unavailable
+- Flagship project highlight — the primary project is visually called out with a badge and a larger card
 - Project gallery with an expandable detail modal
 - Contact form with client-side validation, wired to a FastAPI email backend
 - Fully responsive (mobile, tablet, desktop) and accessibility-conscious (semantic landmarks, ARIA labels, keyboard navigation)
@@ -32,10 +34,11 @@ portfolio/
 ├── components/            # Reusable React components
 │   ├── Navigation.tsx     # Scroll-spy navigation bar
 │   ├── GlassCard.tsx      # Glassmorphism card primitive
-│   ├── ProjectCard.tsx    # Project preview card
+│   ├── ProjectCard.tsx    # Project preview card (flagship badge support)
 │   ├── ProjectModal.tsx   # Project detail modal
+│   ├── GitHubShowcase.tsx # Live GitHub stats & top repos
 │   └── ContactForm.tsx    # Validated contact form
-├── lib/                   # Shared types, validation, API client
+├── lib/                   # Shared types, validation, GitHub API client, email API client
 ├── public/                # Static assets (resume, images)
 ├── backend/                # FastAPI contact form service
 │   ├── main.py
@@ -88,6 +91,7 @@ Backend tests: `cd backend && pytest test_main.py -v`
 ## Customizing
 
 - Site content (hero copy, projects, experience, education, skills, research) lives inline in [`app/page.tsx`](app/page.tsx).
+- The GitHub showcase reads from the `GITHUB_USERNAME` constant at the top of `app/page.tsx` — change it to point at a different profile. Mark a project as the flagship by setting `featured: true` on it.
 - Replace [`public/resume.pdf`](public/resume.pdf) with your own resume.
 - Drop real project screenshots into `public/images/projects/` and update each project's `imageUrl` in `app/page.tsx` (they currently fall back to a generated placeholder).
 

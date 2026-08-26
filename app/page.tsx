@@ -5,7 +5,10 @@ import GlassCard from '@/components/GlassCard';
 import ProjectCard from '@/components/ProjectCard';
 import ProjectModal from '@/components/ProjectModal';
 import ContactForm from '@/components/ContactForm';
+import GitHubShowcase from '@/components/GitHubShowcase';
 import { Project, Experience, Education, SkillCategory } from '@/lib/types';
+
+const GITHUB_USERNAME = 'ParkhiyaParth';
 
 /**
  * Single Page Scrollable Portfolio
@@ -28,7 +31,8 @@ const projects: Project[] = [
         ],
         imageUrl: '/images/placeholder.svg',
         githubUrl: 'https://github.com',
-        liveUrl: 'https://example.com'
+        liveUrl: 'https://example.com',
+        featured: true
     },
     {
         id: '2',
@@ -303,6 +307,17 @@ export default function Home() {
                             />
                         ))}
                     </div>
+                </div>
+            </section>
+
+            {/* GitHub Activity Section */}
+            <section id="github" className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 scroll-mt-16">
+                <div className="max-w-6xl mx-auto">
+                    <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">GitHub Activity</h2>
+                    <p className="text-center text-dark-text-secondary mb-12 max-w-2xl mx-auto">
+                        A live look at my open-source work, pulled directly from GitHub.
+                    </p>
+                    <GitHubShowcase username={GITHUB_USERNAME} />
                 </div>
             </section>
 

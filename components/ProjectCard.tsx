@@ -35,16 +35,26 @@ export default function ProjectCard({ project, onOpenModal }: ProjectCardProps) 
 
     return (
         <article
-            className="group"
+            className={`group ${project.featured ? 'md:col-span-2' : ''}`}
             onClick={handleClick}
             onKeyDown={handleKeyDown}
             role="button"
             tabIndex={0}
-            aria-label={`View details for ${project.title} project`}
+            aria-label={`View details for ${project.title} project${project.featured ? ' (featured project)' : ''}`}
         >
-            <GlassCard variant="hover" className="h-full flex flex-col overflow-hidden transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-purple-500/20">
+            <GlassCard
+                variant="hover"
+                className={`h-full flex flex-col overflow-hidden transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-purple-500/20 ${
+                    project.featured ? 'ring-1 ring-purple-400/40' : ''
+                }`}
+            >
                 {/* Project Image */}
                 <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-gradient-to-br from-purple-500/20 to-blue-500/20">
+                    {project.featured && (
+                        <span className="absolute top-3 left-3 z-10 inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg">
+                            ★ Flagship Project
+                        </span>
+                    )}
                     <Image
                         src={project.imageUrl}
                         alt={`${project.title} project screenshot`}

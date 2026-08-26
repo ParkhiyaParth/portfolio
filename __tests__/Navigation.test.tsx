@@ -8,6 +8,7 @@ const SECTIONS = [
     ['About', '#about'],
     ['Skills', '#skills'],
     ['Projects', '#projects'],
+    ['GitHub', '#github'],
     ['Experience', '#experience'],
     ['Education', '#education'],
     ['Research', '#research'],

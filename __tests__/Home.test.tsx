@@ -10,6 +10,16 @@ import { render, screen, within } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Home from '@/app/page';
 
+// GitHubShowcase fetches live data from the GitHub API; stub it out so
+// these tests stay hermetic and don't depend on network access.
+beforeEach(() => {
+    global.fetch = jest.fn().mockRejectedValue(new Error('network disabled in tests'));
+});
+
+afterEach(() => {
+    jest.restoreAllMocks();
+});
+
 describe('Home page', () => {
     test('renders the name as the top-level heading', () => {
         render(<Home />);
@@ -39,6 +49,7 @@ describe('Home page', () => {
             'about',
             'skills',
             'projects',
+            'github',
             'experience',
             'education',
             'research',
@@ -57,6 +68,7 @@ describe('Home page', () => {
             'About Me',
             'Skills & Technologies',
             'Projects',
+            'GitHub Activity',
             'Experience',
             'Education',
             'Research Interests',

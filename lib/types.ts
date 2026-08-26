@@ -17,6 +17,7 @@
  * @property imageUrl - Path to project preview image
  * @property githubUrl - Optional link to GitHub repository
  * @property liveUrl - Optional link to live deployment
+ * @property featured - Optional flag marking this as the flagship project
  */
 export interface Project {
     id: string;
@@ -28,6 +29,36 @@ export interface Project {
     imageUrl: string;
     githubUrl?: string;
     liveUrl?: string;
+    featured?: boolean;
+}
+
+/**
+ * Represents a single public GitHub repository as returned by the GitHub REST API
+ * (subset of fields actually used by the GitHub showcase section)
+ */
+export interface GitHubRepo {
+    id: number;
+    name: string;
+    html_url: string;
+    description: string | null;
+    stargazers_count: number;
+    forks_count: number;
+    language: string | null;
+    updated_at: string;
+    fork: boolean;
+    archived: boolean;
+}
+
+/**
+ * Represents the subset of GitHub user profile fields used by the GitHub showcase section
+ */
+export interface GitHubUser {
+    login: string;
+    html_url: string;
+    public_repos: number;
+    followers: number;
+    following: number;
+    avatar_url: string;
 }
 
 /**
