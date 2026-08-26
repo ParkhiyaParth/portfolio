@@ -1,12 +1,29 @@
 'use client';
 
 import { useState } from 'react';
+import { motion, MotionConfig, Variants } from 'framer-motion';
 import GlassCard from '@/components/GlassCard';
 import ProjectCard from '@/components/ProjectCard';
 import ProjectModal from '@/components/ProjectModal';
 import ContactForm from '@/components/ContactForm';
 import GitHubShowcase from '@/components/GitHubShowcase';
+import Reveal from '@/components/Reveal';
 import { Project, Experience, Education, SkillCategory } from '@/lib/types';
+
+const heroVariants: Variants = {
+    hidden: { opacity: 0, y: 16 },
+    visible: { opacity: 1, y: 0 },
+};
+
+const badgeContainerVariants: Variants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.05 } },
+};
+
+const badgeVariants: Variants = {
+    hidden: { opacity: 0, y: 8 },
+    visible: { opacity: 1, y: 0 },
+};
 
 const GITHUB_USERNAME = 'ParkhiyaParth';
 
@@ -206,10 +223,17 @@ export default function Home() {
     };
 
     return (
-        <>
+        <MotionConfig reducedMotion="user">
+            <>
             {/* Hero Section */}
             <section id="home" className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 scroll-mt-16">
-                <div className="text-center max-w-4xl mx-auto">
+                <motion.div
+                    className="text-center max-w-4xl mx-auto"
+                    initial="hidden"
+                    animate="visible"
+                    variants={heroVariants}
+                    transition={{ duration: 0.6, ease: 'easeOut' }}
+                >
                     <h1 className="mb-4 text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
                         Hi, I&apos;m Parth Parkhiya
                     </h1>
@@ -243,12 +267,12 @@ export default function Home() {
                             Contact Me
                         </a>
                     </div>
-                </div>
+                </motion.div>
             </section>
 
             {/* About Section */}
             <section id="about" className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 scroll-mt-16">
-                <div className="max-w-4xl mx-auto">
+                <Reveal className="max-w-4xl mx-auto">
                     <h2 className="text-4xl md:text-5xl font-bold text-center mb-12">About Me</h2>
                     <GlassCard variant="default">
                         <p className="text-gray-300 text-lg leading-relaxed mb-6">
@@ -263,12 +287,12 @@ export default function Home() {
                             staying updated with the latest advancements in AI technology.
                         </p>
                     </GlassCard>
-                </div>
+                </Reveal>
             </section>
 
             {/* Skills Section */}
             <section id="skills" className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 scroll-mt-16">
-                <div className="max-w-6xl mx-auto">
+                <Reveal className="max-w-6xl mx-auto">
                     <h2 className="text-4xl md:text-5xl font-bold text-center mb-12">Skills & Technologies</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {skillCategories.map((category, index) => (
@@ -276,25 +300,32 @@ export default function Home() {
                                 <h3 className="text-xl font-semibold text-gradient mb-4">
                                     {category.category}
                                 </h3>
-                                <div className="flex flex-wrap gap-2">
+                                <motion.div
+                                    className="flex flex-wrap gap-2"
+                                    initial="hidden"
+                                    whileInView="visible"
+                                    viewport={{ once: true, amount: 0.4 }}
+                                    variants={badgeContainerVariants}
+                                >
                                     {category.skills.map((skill, skillIndex) => (
-                                        <span
+                                        <motion.span
                                             key={skillIndex}
+                                            variants={badgeVariants}
                                             className="px-3 py-1 rounded-full bg-white/10 text-sm text-gray-300 border border-white/20"
                                         >
                                             {skill}
-                                        </span>
+                                        </motion.span>
                                     ))}
-                                </div>
+                                </motion.div>
                             </GlassCard>
                         ))}
                     </div>
-                </div>
+                </Reveal>
             </section>
 
             {/* Projects Section */}
             <section id="projects" className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 scroll-mt-16">
-                <div className="max-w-7xl mx-auto">
+                <Reveal className="max-w-7xl mx-auto">
                     <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">Projects</h2>
                     <p className="text-center text-dark-text-secondary mb-12 max-w-2xl mx-auto">
                         A showcase of my AI/ML projects demonstrating practical applications of machine learning,
@@ -309,23 +340,23 @@ export default function Home() {
                             />
                         ))}
                     </div>
-                </div>
+                </Reveal>
             </section>
 
             {/* GitHub Activity Section */}
             <section id="github" className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 scroll-mt-16">
-                <div className="max-w-6xl mx-auto">
+                <Reveal className="max-w-6xl mx-auto">
                     <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">GitHub Activity</h2>
                     <p className="text-center text-dark-text-secondary mb-12 max-w-2xl mx-auto">
                         A live look at my open-source work, pulled directly from GitHub.
                     </p>
                     <GitHubShowcase username={GITHUB_USERNAME} />
-                </div>
+                </Reveal>
             </section>
 
             {/* Experience Section */}
             <section id="experience" className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 scroll-mt-16">
-                <div className="max-w-4xl mx-auto">
+                <Reveal className="max-w-4xl mx-auto">
                     <h2 className="text-4xl md:text-5xl font-bold text-center mb-12">Experience</h2>
                     <div className="space-y-6">
                         {experiences.map((exp) => (
@@ -348,12 +379,12 @@ export default function Home() {
                             </GlassCard>
                         ))}
                     </div>
-                </div>
+                </Reveal>
             </section>
 
             {/* Education Section */}
             <section id="education" className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 scroll-mt-16">
-                <div className="max-w-4xl mx-auto">
+                <Reveal className="max-w-4xl mx-auto">
                     <h2 className="text-4xl md:text-5xl font-bold text-center mb-12">Education</h2>
                     <div className="space-y-6">
                         {education.map((edu) => (
@@ -371,12 +402,12 @@ export default function Home() {
                             </GlassCard>
                         ))}
                     </div>
-                </div>
+                </Reveal>
             </section>
 
             {/* Research Section */}
             <section id="research" className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 scroll-mt-16">
-                <div className="max-w-4xl mx-auto">
+                <Reveal className="max-w-4xl mx-auto">
                     <h2 className="text-4xl md:text-5xl font-bold text-center mb-12">Research Interests</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {researchInterests.map((interest, index) => (
@@ -390,12 +421,12 @@ export default function Home() {
                             </GlassCard>
                         ))}
                     </div>
-                </div>
+                </Reveal>
             </section>
 
             {/* Resume Section */}
             <section id="resume" className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 flex items-center justify-center scroll-mt-16">
-                <div className="max-w-2xl mx-auto text-center">
+                <Reveal className="max-w-2xl mx-auto text-center">
                     <h2 className="text-4xl md:text-5xl font-bold mb-12">Resume</h2>
                     <GlassCard variant="default">
                         <div className="flex justify-center mb-6">
@@ -421,12 +452,12 @@ export default function Home() {
                             Download Resume
                         </a>
                     </GlassCard>
-                </div>
+                </Reveal>
             </section>
 
             {/* Contact Section */}
             <section id="contact" className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 flex items-center justify-center scroll-mt-16">
-                <div className="max-w-2xl mx-auto w-full">
+                <Reveal className="max-w-2xl mx-auto w-full">
                     <h2 className="text-4xl md:text-5xl font-bold text-center mb-12">Get In Touch</h2>
                     <GlassCard variant="default">
                         <p className="text-center text-gray-300 mb-8">
@@ -434,7 +465,7 @@ export default function Home() {
                         </p>
                         <ContactForm />
                     </GlassCard>
-                </div>
+                </Reveal>
             </section>
 
             {/* Project Modal */}
@@ -443,6 +474,7 @@ export default function Home() {
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
             />
-        </>
+            </>
+        </MotionConfig>
     );
 }
