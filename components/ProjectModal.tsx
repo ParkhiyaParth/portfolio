@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Project } from '@/lib/types';
 
 interface ProjectModalProps {
@@ -128,25 +129,30 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
         }
     };
 
-    // Don't render anything if not open or no project
-    if (!isOpen || !project) {
-        return null;
-    }
-
     return (
-        <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
-            onClick={handleBackdropClick}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="modal-title"
-        >
-            <div
-                ref={modalRef}
-                className="glass-card w-full max-w-4xl max-h-[90vh] overflow-y-auto relative"
-                tabIndex={-1}
-                onKeyDown={handleKeyDown}
-            >
+        <AnimatePresence>
+            {isOpen && project && (
+                <motion.div
+                    className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+                    onClick={handleBackdropClick}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="modal-title"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                >
+                    <motion.div
+                        ref={modalRef}
+                        className="glass-card w-full max-w-4xl max-h-[90vh] overflow-y-auto relative"
+                        tabIndex={-1}
+                        onKeyDown={handleKeyDown}
+                        initial={{ opacity: 0, scale: 0.95, y: 12 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: 12 }}
+                        transition={{ type: 'spring', stiffness: 300, damping: 28 }}
+                    >
                 {/* Close button */}
                 <button
                     onClick={onClose}
@@ -226,7 +232,9 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                         </div>
                     )}
                 </div>
-            </div>
-        </div>
+                    </motion.div>
+                </motion.div>
+            )}
+        </AnimatePresence>
     );
 }

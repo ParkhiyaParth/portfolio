@@ -53,4 +53,20 @@ describe('Navigation', () => {
         render(<Navigation />);
         expect(screen.getByRole('navigation', { name: /main navigation/i })).toBeInTheDocument();
     });
+
+    test('marks the active section link with aria-current and a sliding indicator', () => {
+        // No section elements exist in this isolated render, so the scroll-spy
+        // falls back to its initial 'home' state.
+        render(<Navigation />);
+        const activeLink = screen.getAllByRole('link', { name: 'Home' }).find(
+            (link) => link.getAttribute('aria-current') === 'page'
+        );
+        expect(activeLink).toBeDefined();
+        expect(activeLink?.querySelector('[class*="absolute"]')).toBeInTheDocument();
+
+        const inactiveLink = screen.getAllByRole('link', { name: 'About' }).find(
+            (link) => link.getAttribute('href') === '#about'
+        );
+        expect(inactiveLink).not.toHaveAttribute('aria-current');
+    });
 });

@@ -624,9 +624,9 @@ describe('ProjectsAndModal - Property-Based Tests', () => {
             );
         });
 
-        it('should transition from visible to hidden when closed', () => {
-            fc.assert(
-                fc.property(projectArbitrary(), (project) => {
+        it('should transition from visible to hidden when closed', async () => {
+            await fc.assert(
+                fc.asyncProperty(projectArbitrary(), async (project) => {
                     const { rerender, unmount } = render(
                         <ProjectModal
                             project={project}
@@ -648,8 +648,10 @@ describe('ProjectsAndModal - Property-Based Tests', () => {
                             />
                         );
 
-                        // Property: Modal is no longer in the DOM
-                        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+                        // Property: modal leaves the DOM once its exit animation finishes
+                        await waitFor(() => {
+                            expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+                        });
                     } finally {
                         unmount();
                     }

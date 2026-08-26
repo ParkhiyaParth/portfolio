@@ -5,9 +5,29 @@ import Navigation from "@/components/Navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const siteUrl = "https://portfolio.129-154-244-125.sslip.io";
+const title = "Parth Parkhiya — AI/ML Engineer & LLM/RAG Developer";
+const description =
+    "Portfolio of Parth Parkhiya, an AI/ML Engineer specializing in Retrieval-Augmented Generation, LLM applications, and practical machine learning systems.";
+
 export const metadata: Metadata = {
-    title: "Portfolio - AI/ML Professional",
-    description: "Modern portfolio website showcasing AI/ML expertise, projects, and professional experience",
+    metadataBase: new URL(siteUrl),
+    title,
+    description,
+    keywords: ["Parth Parkhiya", "AI/ML Engineer", "RAG", "LLM", "Machine Learning", "Portfolio"],
+    authors: [{ name: "Parth Parkhiya", url: siteUrl }],
+    openGraph: {
+        title,
+        description,
+        url: siteUrl,
+        siteName: "Parth Parkhiya — Portfolio",
+        type: "website",
+    },
+    twitter: {
+        card: "summary_large_image",
+        title,
+        description,
+    },
 };
 
 export default function RootLayout({

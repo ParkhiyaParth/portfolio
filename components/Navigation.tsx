@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface NavLink {
     label: string;
@@ -124,13 +125,20 @@ export default function Navigation() {
                                     key={link.href}
                                     href={link.href}
                                     onClick={(e) => handleScroll(e, link.href)}
-                                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActiveLink(link.href)
-                                            ? 'text-accent-purple bg-white/10'
+                                    className={`relative px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActiveLink(link.href)
+                                            ? 'text-accent-purple'
                                             : 'text-dark-text-secondary hover:text-dark-text hover:bg-white/5'
                                         }`}
                                     aria-current={isActiveLink(link.href) ? 'page' : undefined}
                                 >
-                                    {link.label}
+                                    {isActiveLink(link.href) && (
+                                        <motion.span
+                                            layoutId="nav-active-pill"
+                                            className="absolute inset-0 rounded-md bg-white/10"
+                                            transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                                        />
+                                    )}
+                                    <span className="relative">{link.label}</span>
                                 </a>
                             ))}
                         </div>
@@ -187,26 +195,34 @@ export default function Navigation() {
             </div>
 
             {/* Mobile menu */}
-            {isMobileMenuOpen && (
-                <div className="md:hidden">
-                    <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 glass-nav border-t border-white/10">
-                        {navLinks.map((link) => (
-                            <a
-                                key={link.href}
-                                href={link.href}
-                                onClick={(e) => handleScroll(e, link.href)}
-                                className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${isActiveLink(link.href)
-                                        ? 'text-accent-purple bg-white/10'
-                                        : 'text-dark-text-secondary hover:text-dark-text hover:bg-white/5'
-                                    }`}
-                                aria-current={isActiveLink(link.href) ? 'page' : undefined}
-                            >
-                                {link.label}
-                            </a>
-                        ))}
-                    </div>
-                </div>
-            )}
+            <AnimatePresence>
+                {isMobileMenuOpen && (
+                    <motion.div
+                        className="md:hidden overflow-hidden"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25, ease: 'easeInOut' }}
+                    >
+                        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 glass-nav border-t border-white/10">
+                            {navLinks.map((link) => (
+                                <a
+                                    key={link.href}
+                                    href={link.href}
+                                    onClick={(e) => handleScroll(e, link.href)}
+                                    className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${isActiveLink(link.href)
+                                            ? 'text-accent-purple bg-white/10'
+                                            : 'text-dark-text-secondary hover:text-dark-text hover:bg-white/5'
+                                        }`}
+                                    aria-current={isActiveLink(link.href) ? 'page' : undefined}
+                                >
+                                    {link.label}
+                                </a>
+                            ))}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </nav>
     );
 }
