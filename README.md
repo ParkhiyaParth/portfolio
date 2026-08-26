@@ -2,7 +2,7 @@
 
 A single-page, dark-themed portfolio with glassmorphism styling, built with Next.js (App Router) and TypeScript, backed by a FastAPI service for the contact form.
 
-**Live demo:** _add your deployed URL here once published_
+**Live demo:** https://portfolio.129-154-244-125.sslip.io
 
 ## Tech Stack
 

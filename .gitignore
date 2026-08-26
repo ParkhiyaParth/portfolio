@@ -52,3 +52,6 @@ Thumbs.db
 # test artifacts
 test_output*.txt
 test_results.txt
+
+# host-specific compose overrides (see docs/DEPLOYMENT.md)
+docker-compose.override.yml

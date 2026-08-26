@@ -30,6 +30,13 @@ normal use — the browser only ever talks to your domain.
 - A domain name with an **A record pointing at your server's IP** (required for Caddy to obtain a Let's Encrypt certificate automatically)
 - Ports `80` and `443` open/forwarded to the server
 
+> **No domain yet?** [sslip.io](https://sslip.io) gives you a free hostname
+> for any IP with no signup: `<ip-with-dashes>.sslip.io` (e.g.
+> `203-0-113-5.sslip.io`, or `portfolio.203-0-113-5.sslip.io` for a
+> subdomain) resolves straight to that IP, and Caddy can obtain a real
+> Let's Encrypt certificate for it exactly like a normal domain. Use one of
+> these in place of `yourdomain.com` anywhere below.
+
 ## 1. Clone the repo on the server
 
 ```bash
@@ -74,9 +81,15 @@ if the site doesn't load immediately over HTTPS.
 ## 5. Verify
 
 ```bash
-curl -I https://yourdomain.com          # frontend
-curl https://yourdomain.com/api/        # backend health check → {"status":"ok",...}
+curl -I https://yourdomain.com                            # frontend
+curl -X POST https://yourdomain.com/api/contact \          # backend, through Caddy
+  -H "Content-Type: application/json" \
+  -d '{"name":"Test","email":"test@example.com","message":"Verifying the deploy end to end."}'
 ```
+
+The backend's plain `GET /` health check isn't publicly reachable through
+Caddy (only `/api/*` is proxied to it) — check it directly on the server
+instead: `docker compose exec backend curl -s http://localhost:8000/`.
 
 ## Updating after a code change
 
@@ -94,6 +107,53 @@ docker compose up -d --build
 | `docker compose ps`                      | Container status                  |
 | `docker compose down`                    | Stop everything                   |
 | `docker compose up -d --build frontend`  | Rebuild/restart just the frontend |
+
+## Already running your own Caddy (or other sites) on this server?
+
+If the server already has a system-level Caddy (or Nginx, etc.) bound to
+ports 80/443 for other projects, don't run this stack's own `caddy`
+service — it'll lose the fight for the port. Instead:
+
+1. Skip the bundled Caddy and only bring up the app containers, publishing
+   them on localhost-only ports via a `docker-compose.override.yml`
+   (Compose merges this automatically, and it's gitignored so it stays
+   host-specific):
+
+   ```yaml
+   # docker-compose.override.yml
+   services:
+     frontend:
+       ports:
+         - "127.0.0.1:3001:3000"
+     backend:
+       ports:
+         - "127.0.0.1:8001:8000"
+   ```
+
+   ```bash
+   docker compose up -d --build frontend backend
+   ```
+
+2. Append a new site block to the *existing* Caddyfile (don't touch the
+   other sites already in there) pointing at those local ports:
+
+   ```caddyfile
+   portfolio.yourdomain-or-sslip-host {
+       handle /api/* {
+           reverse_proxy 127.0.0.1:8001
+       }
+       handle {
+           reverse_proxy 127.0.0.1:3001
+       }
+   }
+   ```
+
+3. Validate and reload without downtime for the other sites:
+
+   ```bash
+   sudo caddy validate --config /etc/caddy/Caddyfile
+   sudo systemctl reload caddy
+   ```
 
 ## Already running your own Nginx?
 

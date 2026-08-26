@@ -13,6 +13,9 @@ const customJestConfig = {
     '^@/(.*)$': '<rootDir>/$1',
   },
   testMatch: ['**/__tests__/**/*.test.ts?(x)', '**/?(*.)+(spec|test).ts?(x)'],
+  // .next/standalone contains its own package.json (from `output: "standalone"`),
+  // which otherwise collides with the root one under Jest's Haste module map.
+  modulePathIgnorePatterns: ['<rootDir>/.next/'],
   collectCoverageFrom: [
     'components/**/*.{ts,tsx}',
     'lib/**/*.{ts,tsx}',
