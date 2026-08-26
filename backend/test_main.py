@@ -303,10 +303,16 @@ class TestCORSConfiguration:
     """Tests for CORS middleware configuration"""
     
     def test_cors_headers_present(self):
-        """Test that CORS headers are included in response"""
-        # Act
-        response = client.options("/api/contact")
-        
+        """Test that CORS headers are included in a preflight response for an allowed origin"""
+        # Act - a real browser preflight always sends Origin + Access-Control-Request-Method
+        response = client.options(
+            "/api/contact",
+            headers={
+                "Origin": "http://localhost:3000",
+                "Access-Control-Request-Method": "POST",
+            },
+        )
+
         # Assert - CORS headers should be present
         assert "access-control-allow-origin" in [h.lower() for h in response.headers.keys()]
 

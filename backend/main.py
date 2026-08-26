@@ -26,12 +26,18 @@ app = FastAPI(
 )
 
 # CORS configuration - allow requests from Next.js frontend
-origins = [
+# ALLOWED_ORIGINS can be set to a comma-separated list of extra origins
+# (e.g. your production domain) without editing this file.
+default_origins = [
     "http://localhost:3000",  # Next.js dev server
     "http://127.0.0.1:3000",
-    # Add your production domain here when deployed
-    # "https://yourdomain.com",
 ]
+extra_origins = [
+    origin.strip()
+    for origin in os.getenv("ALLOWED_ORIGINS", "").split(",")
+    if origin.strip()
+]
+origins = default_origins + extra_origins
 
 app.add_middleware(
     CORSMiddleware,

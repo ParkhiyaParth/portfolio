@@ -1,0 +1,15 @@
+node_modules
+.next
+.git
+.github
+.vscode
+.swc
+__tests__
+docs
+backend
+coverage
+*.md
+.env
+.env.*
+!.env.local.example
+test_output*.txt

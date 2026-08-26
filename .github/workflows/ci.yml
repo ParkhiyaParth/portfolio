@@ -48,3 +48,15 @@ jobs:
 
       - name: Test
         run: pytest test_main.py -v
+
+  docker:
+    name: Docker builds
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build frontend image
+        run: docker build --build-arg NEXT_PUBLIC_API_URL=http://localhost:8000 -t portfolio-frontend .
+
+      - name: Build backend image
+        run: docker build -t portfolio-backend ./backend

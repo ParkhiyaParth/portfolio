@@ -88,6 +88,18 @@ API docs are available at `http://localhost:8000/docs`. See [backend/README.md](
 
 Backend tests: `cd backend && pytest test_main.py -v`
 
+## Deployment
+
+Ready to self-host with Docker: a `Dockerfile` for each service, `docker-compose.yml`,
+and a Caddy reverse proxy that provisions HTTPS automatically. See
+[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for the full walkthrough — short version:
+
+```bash
+cp .env.example .env && cp backend/.env.example backend/.env
+# edit both .env files and Caddyfile with your domain/SMTP credentials
+docker compose up -d --build
+```
+
 ## Customizing
 
 - Site content (hero copy, projects, experience, education, skills, research) lives inline in [`app/page.tsx`](app/page.tsx).
